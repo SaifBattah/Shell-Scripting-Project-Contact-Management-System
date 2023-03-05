@@ -1,0 +1,191 @@
+x=0
+while [ $x -le 0 ]
+do
+echo "
+
+**** Welcome to Contact Management System ****
+
+
+		MAIN MENU
+	=====================
+	[1] Add a new Contact
+	[2] List all Contacts
+	[3] Search for Contact
+	[4] Edit a Contact
+	[5] Delete a Contact
+	[0] Exit
+	=====================
+	Enter the choice: "
+read  choice
+case "$choice"
+	in
+	
+	
+	
+	1) echo "
+----------------------
+Adding A New Contact!!
+----------------------
+First Name: "; 
+read FName
+pat="^[a-z A-Z]*[a-z A-Z]$"
+while [[ ! $FName =~ $pat ]]
+	do 
+	if [ "$FName" == "" ]; 
+	then
+		echo "First Name Is Nessessary!"
+	fi
+		echo "Please enter correct name: "
+		read FName
+	done
+	
+
+
+
+
+
+
+
+
+	echo "Last Name: "; 
+	read LName 
+	pat="^[a-z A-Z]*[a-z A-Z]$"
+	if [ "$MNo" != "" ];
+		then
+			while [[ ! $LName =~ $pat ]]
+				do 
+					echo "Please enter correct name: "
+					read LName
+				done
+		fi
+
+
+
+	echo "Mobile Number: "; 
+	read MNo
+	pat="^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+	while [[ ! $MNo =~ $pat ]]
+		do 
+		if [ "$MNo" == "" ]; 
+			then
+		echo "Mobile Number Is Nessessary!"
+		fi
+			echo "Please enter correct Mobile Number [10 digits]: "
+			read MNo
+		done
+
+
+
+
+
+	echo "TelePhone Number: "; 
+	read TNo
+	pat="^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+	if [ "$TNo" != "" ];
+		then
+			while [[ ! $TNo =~ $pat ]]
+				do 
+					echo "Please enter correct Telephone Number [9 digits]: "
+					read TNo
+				done
+		fi
+
+
+
+
+
+	echo "email: "; 
+	read Email 
+	pat="^[a-zA-Z0-9].*[@].*[a-zA-Z0-9]$"
+	if [ "$Email" != "" ];
+		then
+			while [[ ! $Email =~ $pat ]]
+				do 
+					echo "Please enter correct Email: "
+					read Email
+				done
+		fi
+
+
+
+
+
+echo "$FName, $LName, $MNo; $TNo , $Email" >> contact.txt
+;;
+
+
+
+
+	2) echo " 
+--------------------
+Listing All Contacts
+--------------------
+
+List By?
+--------
+1) First Name.
+2) Last Name.
+Enter the choice: "
+read  sel
+case "$sel"
+	in
+		1) sort -k 1 contact.txt ;;
+		2) sort -k 2 contact.txt
+esac
+;;
+
+
+
+
+	3) echo " 
+--------------------------
+Searching For a Contact!!!
+--------------------------
+Enter Contact's info: "; 
+read -a Info
+A="${Info[0]}"
+B="${Info[1]}"
+grep "$A.*$B" contact.txt | cut -d',' -f1-5
+;;
+
+
+
+
+	4) echo " 
+--------------------
+Editing a Contact!!!
+--------------------
+Enter Contact's info: "; 
+read -a Info
+A="${Info[0]}"
+B="${Info[1]}"
+Y=$(grep "$A.*$B" contact.txt | cut -d',' -f1-5)
+echo "$Y"
+read -p "Enter the thing you want to edit: " old
+read -p "Enter the new data: " new
+sed -i "s/$old/$new/" $'contact.txt' 
+;;
+
+
+
+
+	5) echo " 
+---------------------
+Deleting a Contact!!!
+---------------------
+Enter Contact's First Name: "; read FName
+sed -e "/$FName/d" contact.txt >> temp.txt 
+rm contact.txt 
+mv temp.txt contact.txt
+cat contact.txt ;;
+
+
+
+
+	0) echo "Bye"; 
+	x=1
+	exit 1
+
+
+esac
+done

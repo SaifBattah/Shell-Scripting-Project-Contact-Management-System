@@ -1,0 +1,6 @@
+read -p "Enter Name of Contact File: " x
+if [ -f "$x" ]; then
+	./Menu
+else
+	echo "$x Doesn't Esist!!!"
+fi
